@@ -9,13 +9,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-
-const data = [
-    {id: 1, sku: 'DEAN', name: 'Deanston 12 years old', price: 99.99},
-    {id: 2, sku: 'KIL', name: 'Kilkerran 12 years old', price: 89.99},
-    {id: 3, sku: 'ARR', name: 'Arran 10 years old', price: 79.99},
-    {id: 4, sku: 'JOHN', name: 'Johnnie Walker Green Label', price: 75.99}
-]
+import StockData from './StockData';
 
 function Shop() {
     const [openAlert, setOpenAlert] = useState(false)
@@ -51,7 +45,7 @@ function Shop() {
                 </TableRow>
                 </TableHead>
                 <TableBody>
-                    {data.map((row) => <Item key={row.id} row={row} addToCart={addToCart}/>)}
+                    {StockData.map((row) => <Item key={row.id} row={row} addToCart={addToCart}/>)}
                 </TableBody>
             </Table>
         </TableContainer>

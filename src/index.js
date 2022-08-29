@@ -7,6 +7,7 @@ import { createTheme } from "@mui/material"
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { ThemeProvider } from '@mui/material';
 import Shop from './Shop'
+import Cart from './Cart';
 
 const theme = createTheme({
   spacing: 4,
@@ -36,7 +37,7 @@ root.render(
 					<Routes>
 						<Route path="/" element={<App />}>
 							<Route path="/shop" element={<Shop/>}/>
-							<Route path="/cart" element={<></>}/>
+							<Route path="/cart" element={<Cart/>}/>
 						</Route>
 					</Routes>
 				</React.StrictMode>
