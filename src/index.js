@@ -35,7 +35,7 @@ root.render(
 				<React.StrictMode>
 					<Routes>
 						<Route path="/" element={<App />}>
-							<Route path="/shop" element={<></>}/>
+							<Route path="/shop" element={<Shop/>}/>
 							<Route path="/cart" element={<></>}/>
 						</Route>
 					</Routes>
