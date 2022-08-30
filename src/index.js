@@ -21,6 +21,7 @@ root.render(
 				<React.StrictMode>
 					<Routes>
 						<Route path="/" element={<App />}>
+              <Route index element={<>Welcome to Kilkimi Whiskies. Buy some damn whisky.</>}/>
 							<Route path="/shop" element={<Shop/>}/>
 							<Route path="/cart" element={<Cart/>}/>
 						</Route>
