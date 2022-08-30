@@ -16,13 +16,36 @@ function Cart() {
     const [allPrices, ] = useState(Object.fromEntries(new Map(StockData.map((x) => [x.sku, x.price]))))
     const [totalPrice, setTotalPrice] = useState(0)
 
+    const calculatePrice = (cart) => {
+        var totalPrice = 0
+        var currProduct = null
+        var currQty = 0
+        var currPrice = 0
+        
+        for(var i=0; i < Object.keys(cart).length; i+=1){
+            currProduct = Object.keys(cart)[i]
+            currQty = cart[currProduct]
+            
+            console.log(currProduct, currQty)
+            if(currProduct == 'JOHN'){
+                currPrice = allPrices[currProduct] * (currQty - Math.floor(currQty / 4))
+            }else if(currProduct == 'ARR' && currQty >= 12){
+                currPrice = 75 * currQty
+            }else{
+                currPrice = allPrices[currProduct] * currQty
+            }
+            totalPrice += currPrice
+        }
+        return totalPrice
+    }
+
     const updateCart = (productCode, quantity) => {
         var currCart = cartData
         currCart[productCode] = parseInt(quantity)
         
         setCartData(currCart)
         localStorage.setItem('cart', JSON.stringify(currCart))
-        setTotalPrice(Object.entries(cartData).reduce((sum, a) => sum + allPrices[a[0]] * a[1], 0))
+        setTotalPrice(calculatePrice(currCart))
     }
 
     return (
@@ -44,6 +67,7 @@ function Cart() {
             <Box sx={{ display: 'flex', flexDirection: 'column'}}>
                 {`Total: $${totalPrice.toFixed(2)}`}
                 <Button variant='contained'>Checkout</Button>
+                {totalPrice > 500 && "one free bottle of 'Deanston 12 years old' will be added to your order at checkout"}
             </Box>
         </Box>
     )
