@@ -10,21 +10,6 @@ import Shop from './Shop'
 import Cart from './Cart';
 
 const theme = createTheme({
-  spacing: 4,
-  palette: {
-      primary: {
-        main: '#22396f',
-        light: '#53639e',
-        dark: '#001443',
-        contrastText: '#fff',
-      },
-      secondary: {
-        main: '#e0b869',
-        light: '#ffea98',
-        dark: '#ac883c',
-        contrastText: '#22396f',
-      },
-  },
 })
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

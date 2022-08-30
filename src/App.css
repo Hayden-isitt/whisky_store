@@ -36,3 +36,7 @@
     transform: rotate(360deg);
   }
 }
+
+.App-navlink {
+  padding-left: 20px;
+}
