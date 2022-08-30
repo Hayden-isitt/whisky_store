@@ -28,6 +28,7 @@ const calculateItemPrice = (productCode, qty, price) => {
 function Cart() {
     const [cartData, setCartData] = useState(JSON.parse(localStorage.getItem('cart')) ?? {})
     const [allPrices, ] = useState(Object.fromEntries(new Map(StockData.map((x) => [x.sku, x.price]))))
+    const [totalPrice, setTotalPrice] = useState(0)
     
     const calculateTotalPrice = (cart) => {
         var totalPrice = 0
@@ -44,7 +45,18 @@ function Cart() {
         }
         return totalPrice
     }
-    const [totalPrice, setTotalPrice] = useState(calculateTotalPrice(cartData))
+
+    const removeFromCart = (productCode) => {
+        var currCart = cartData
+        delete currCart[productCode]
+
+        setCartData(currCart)
+        localStorage.setItem('cart', JSON.stringify(currCart))
+    }
+
+    useEffect(() => {
+        setTotalPrice(calculateTotalPrice(cartData))
+    }, [cartData])
 
     return (
         <Box>
@@ -55,17 +67,18 @@ function Cart() {
                         <TableCell align="left">Product Name</TableCell>
                         <TableCell align="left">Quantity</TableCell>
                         <TableCell align="left">Price</TableCell>
+                        <TableCell align="left"></TableCell>
                     </TableRow>
                     </TableHead>
                     <TableBody>
-                        {Object.entries(cartData).map((row, key) => <Item key={key} item={row[0]} qty={row[1]}/>)}
+                        {Object.entries(cartData).map((row, key) => <Item key={key} item={row[0]} qty={row[1]} remove={removeFromCart}/>)}
                     </TableBody>
                 </Table>
             </TableContainer>
             <Box sx={{ display: 'flex', flexDirection: 'column'}}>
                 {`Total: $${totalPrice.toFixed(2)}`}
                 <Button variant='contained'>Checkout</Button>
-                {totalPrice > 500 && "one free bottle of 'Deanston 12 years old' will be added to your order at checkout"}
+                {totalPrice > 500 && "A free bottle of 'Deanston 12 years old' will be added to your order at checkout"}
             </Box>
         </Box>
     )
@@ -83,6 +96,10 @@ function Item(props) {
                 <TableCell align="left">{itemData.name}</TableCell>
                 <TableCell align="left">{qty}</TableCell>
                 <TableCell align="left">{`$${(calculateItemPrice(itemData.sku, qty, itemData.price)).toFixed(2)}`}</TableCell>
+                <TableCell align="left"><Button variant='outlined' onClick={(e) => {
+                    props.remove(itemData.sku)
+                    setQty(0)
+                }}>Remove</Button></TableCell>
             </TableRow>
         </>
     )
