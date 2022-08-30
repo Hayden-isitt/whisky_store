@@ -21,10 +21,12 @@ function Shop() {
     const addToCart = (productCode, quantity) => {
         var currCart = JSON.parse(localStorage.getItem('cart')) ?? {}
         var currProductQty = currCart[productCode] ?? 0
-    
-        currCart[productCode] = parseInt(currProductQty) + parseInt(quantity)
-        localStorage.setItem('cart', JSON.stringify(currCart))
-        setOpenAlert(true)
+        
+        if(productCode != 'KIL' || parseInt(currProductQty) + parseInt(quantity) <= 1){
+            currCart[productCode] = parseInt(currProductQty) + parseInt(quantity)
+            localStorage.setItem('cart', JSON.stringify(currCart))
+            setOpenAlert(true)
+        }
     }
 
     return (
@@ -56,6 +58,15 @@ function Shop() {
 function Item(props) {
     const [qty, setQty] = useState(1)
 
+    const updateQty = (e) => {
+        var newQty = Math.max(e.target.value, 0)
+        if(props.row.sku == 'KIL'){
+            setQty(Math.min(newQty, 1))
+        } else {
+            setQty(newQty)
+        }
+    }
+
     return(
         <TableRow
         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -67,12 +78,13 @@ function Item(props) {
                 <TextField 
                     type='number'
                     value={qty}
-                    onChange={(e) => setQty(e.target.value)}
+                    onChange={updateQty}
                     size='small'
                 />
                 <Button 
                     variant='outlined'
                     onClick={(e) => props.addToCart(props.row.sku, qty)}
+                    disabled={qty <= 0}
                 >Add
                 </Button>
             </TableCell>
